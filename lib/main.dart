@@ -10,7 +10,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Wisata Surakarta',
-      theme: ThemeData(),
+      theme: ThemeData(
+        fontFamily: 'RedditSans'
+      ),
       home: const DetailScreen(),
     );
   }
