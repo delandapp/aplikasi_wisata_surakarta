@@ -1,25 +1,30 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutterdicoding/class/wisata.dart';
 
 class DetailScreen extends StatelessWidget {
-  const DetailScreen({super.key});
+  final Wisata wisata;
+  const DetailScreen({super.key,required this.wisata});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text(wisata.name),
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
             // Agar Lebar Column Memenuhi layar
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              Image.asset("images/farmhouse.jpeg"),
+              Image.network(wisata.imageAsset,height: 200,width: double.infinity,fit: BoxFit.cover,),
               Container(
                 margin: const EdgeInsets.only(top: 16.0),
-                child: const Text(
-                  'Farm House Lembang',
-                  style: TextStyle(
+                child: Text(
+                  wisata.name,
+                  style: const TextStyle(
                       fontSize: 30.0,
                       fontWeight: FontWeight.bold,
                       fontFamily: 'PoetsenOne'),
@@ -28,38 +33,48 @@ class DetailScreen extends StatelessWidget {
               ),
               Container(
                 margin: const EdgeInsets.symmetric(vertical: 16.0),
-                child: const Row(
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
-                    Column(
-                      children: <Widget>[
-                        Icon(Icons.calendar_today),
-                        SizedBox(height: 8.0),
-                        Text(
-                          'Open Everyday',
-                          style: TextStyle(fontWeight: FontWeight.w700),
-                        ),
-                      ],
+                    Flexible(
+                      child: Column(
+                        children: <Widget>[
+                          const Icon(Icons.calendar_today),
+                          const SizedBox(height: 8.0),
+                          FittedBox(
+                            child: Text(
+                              wisata.openDays,
+                              style: const TextStyle(fontWeight: FontWeight.w700),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                    Column(
-                      children: <Widget>[
-                        Icon(Icons.access_time_outlined),
-                        SizedBox(height: 8.0),
-                        Text(
-                          '09.00 - 20.00',
-                          style: TextStyle(fontWeight: FontWeight.w700),
-                        ),
-                      ],
+                    Flexible(
+                      child: Column(
+                        children: <Widget>[
+                          const Icon(Icons.access_time_outlined),
+                          const SizedBox(height: 8.0),
+                          FittedBox(
+                            child: Text(
+                              wisata.openTime,
+                              style: const TextStyle(fontWeight: FontWeight.w700),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                    Column(
-                      children: <Widget>[
-                        Icon(Icons.currency_exchange_outlined),
-                        SizedBox(height: 8.0),
-                        Text(
-                          'Rp 25.000',
-                          style: TextStyle(fontWeight: FontWeight.w700),
-                        ),
-                      ],
+                    Flexible(
+                      child: Column(
+                        children: <Widget>[
+                          const Icon(Icons.currency_exchange_outlined),
+                          const SizedBox(height: 8.0),
+                          Text(
+                            wisata.ticketPrice,
+                            style: const TextStyle(fontWeight: FontWeight.w700),
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
@@ -76,45 +91,32 @@ class DetailScreen extends StatelessWidget {
                 height: 200,
                 child: ListView(
                   scrollDirection: Axis.horizontal,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(20),
-                        child: Image.network(
-                            'https://i.pinimg.com/474x/99/5a/57/995a573518ac01807c47998ac7dae04d.jpg'),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(20),
-                        child: Image.network(
-                            'https://i.pinimg.com/474x/50/2d/b6/502db6395cefb2721e554b8bc0848407.jpg'),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(20),
-                        child: Image.network(
-                            'https://i.pinimg.com/474x/8f/0f/b3/8f0fb3acd20943848c1a34354d537a89.jpg'),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(20),
-                        child: Image.network(
-                            'https://i.pinimg.com/474x/99/aa/70/99aa700e8fa3da6e3a04dae840a2b03d.jpg'),
-                      ),
-                    ),
-                  ],
+                  children: wisata.imageUrls.map((e) => CardImage(imageUrl: e)).toList(),
                 ),
               ),
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class CardImage extends StatelessWidget {
+  String imageUrl;
+  CardImage({
+    super.key,
+    required this.imageUrl
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(20),
+        child: Image.network(
+            imageUrl),
       ),
     );
   }
